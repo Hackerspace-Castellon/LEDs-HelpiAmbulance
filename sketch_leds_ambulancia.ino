@@ -14,7 +14,7 @@ uint32_t colorApagado = leds.Color(0, 0, 0);
 unsigned long tiempoAnterior = 0;
 int paso = 0;
 int modoActual = 0;
-const int numModos = 5; // Ahora tenemos 5 modos diferentes
+const int numModos = 3; // Usamos 3 modos diferentes
 
 void setup() {
   leds.begin();
@@ -47,17 +47,20 @@ void loop() {
       secuenciaAmbulanciaEspanola();
       break;
     case 1:
-      efectoBarrido();
-      break;
-    case 2:
       efectoConvergenteDivergente();
       break;
-    case 3:
+    case 2:
+      ninoNino();
+      break;
+    /*case 3:
       efectoZigzag();
       break;
     case 4:
       efectoCascada();
       break;
+    case 5:
+      efectoBarrido();
+      */
   }
 }
 
@@ -225,5 +228,31 @@ void efectoCascada() {
     
     leds.show();
     paso = (paso + 1) % 8;
+  }
+}
+
+// MODO 5: Efecto ninoNino - alternancia de luces azules
+void ninoNino() {
+  unsigned long tiempoActual = millis();
+
+  if (tiempoActual - tiempoAnterior >= 500) { // Intervalo de 500 ms
+    tiempoAnterior = tiempoActual;
+
+    if (paso % 2 == 0) {
+      // Encender LEDs 0 y 1 (las dos primeras)
+      leds.setPixelColor(0, colorAzul);
+      leds.setPixelColor(1, colorAzul);
+      leds.setPixelColor(2, colorApagado);
+      leds.setPixelColor(3, colorApagado);
+    } else {
+      // Encender LEDs 2 y 3 (las dos últimas)
+      leds.setPixelColor(0, colorApagado);
+      leds.setPixelColor(1, colorApagado);
+      leds.setPixelColor(2, colorAzul);
+      leds.setPixelColor(3, colorAzul);
+    }
+
+    leds.show();
+    paso++;
   }
 }
